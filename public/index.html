@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Tail-f</title>
+  </head>
+  <body>
+        <h1>Log Updates</h1>
+        <div id="log">
+            
+        </div>
+
+        <script>
+            const logDiv = document.getElementById('log');
+            const socket = new WebSocket('ws://localhost:8080');
+            let initialized = false;
+
+            socket.onmessage = (event) => {
+                const message = JSON.parse(event.data);
+                if(message.type ==="init" && !initialized){
+                    message.data.forEach((line) =>{
+                        appendLog(line);
+                        initialized =true;
+                    });
+                }
+                else if(message.type ==="update"){
+                    appendLog(message.data);
+                }
+            };
+
+            function appendLog(line){
+                const p = document.createElement('p');
+                p.textContent = line;
+                logDiv.appendChild(p);
+            }
+        </script>
+  </body>
+</html>

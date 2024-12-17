@@ -5,7 +5,7 @@ import readline from 'readline'
 const filePath = './log.txt';
 let fileOffset = 0;
 export const getLast10Lines = async () =>{
-    const lines = []
+    const lines = [];
     const stream = fs.createReadStream(filePath);
     const rl =readline.createInterface({input: stream});
 
@@ -19,7 +19,7 @@ export const getLast10Lines = async () =>{
 }
 
 
-export const watchFile = (onUpdate) =>{
+export const watchFile = (onUpdate:any) =>{
     fs.watch(filePath, (eventType) =>{
         if(eventType === 'change'){
             const stream = fs.createReadStream(filePath, {start: fileOffset});
