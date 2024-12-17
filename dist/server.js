@@ -5,29 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const http_1 = __importDefault(require("http"));
 const ws_1 = __importDefault(require("ws"));
-const path_1 = __importDefault(require("path"));
-const fs_1 = __importDefault(require("fs"));
 const fileWatcher_1 = require("./services/fileWatcher");
 const broadcast_1 = require("./services/broadcast");
 const PORT = 8080;
-const server = http_1.default.createServer((req, res) => {
-    if (req.url === "/log") {
-        const filePath = path_1.default.join(__dirname, "public", "index.html");
-        fs_1.default.readFile(filePath, (err, data) => {
-            if (err) {
-                res.writeHead(500, { "Content-Type": "text/plain" });
-                res.end("Internal Server Error");
-                return;
-            }
-            res.writeHead(200, { "Content-Type": "text/html" });
-            res.end(data);
-        });
-    }
-    else {
-        res.writeHead(404, { "Content-Type": "text/plain" });
-        res.end("Not Found");
-    }
-});
+const server = http_1.default.createServer();
 const wss = new ws_1.default.Server({ server });
 wss.on('connection', (ws) => {
     console.log('Client connected');
